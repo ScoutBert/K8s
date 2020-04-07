@@ -1,0 +1,34 @@
+Основные команды при работе с kubectl
+Перейти к концу метаданных
+
+kubectl get pods - текущее состояние подов
+
+*kubectl get pods | Select-String atol - текущее состояние подов, но где Select-String аналог grep
+*kubectl get pods --field-selector status.phase=Running - поды со статусом Running
+
+kubectl get deployment - деплойменты - указания, по пунктам которых созданы соответствующие поды
+
+kubectl scale --replicas=0 deployment dev-fiscal-receipt-publisher-atol-pod - говорим что кол-во подов должно быть 0, за счет этого останавливаем работу данного модуля
+
+kubectl scale --replicas=1 deployment dev-fiscal-receipt-publisher-atol-pod - говорим что кол-во подов должно быть 1, за счет этого возобновляем работу данного модуля
+
+kubectl get configmap - список всех конфигов
+
+kubectl describe configmap fiscal-ecr-request-producer-orangedata - посмотреть конфиг конкретного модуля
+
+kubectl edit configmap fiscal-ecr-request-producer-orangedata - изменение конфига (если в windows о откроется блокнот, если в linux то откроется vim)
+
+kubectl get cronjobs - текущее состояние кронджоб (модули с запуском по таймеру)
+
+kubectl -it exec <полное название поды> /bin/bash - аналог захода на вируталку, но на под.
+Позволяет использовать некоторые команды мониторинга системы (к примеру ping, ps aux, pstack, strace -T -tt -p 1), но функционал все равно ограничен.
+Для выхода использовать CTRL+D
+
+
+
+Для выполнения нужна дополнительная утилита, но для дополнительной информации:
+helm install --debug fiscal-receipt-publisher-atol-pod --set env=tfi -f ./fiscal-receipt-publisher-atol/config/tfi_fiscal_receipt_publisher.conf ./fiscal-receipt-publisher-atol/ - запуск нового пода
+
+
+
+*Если в конфиге не прописано куда конкретно подключаться, то возможно стоит добавить в конце  --kubeconfig /home/kbessonov/kubeconf.txt -n tfi-fiscal
