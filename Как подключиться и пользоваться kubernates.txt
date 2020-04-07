@@ -1,0 +1,26 @@
+Как подключиться и пользоваться kubernates.
+Перейти к концу метаданных
+
+       0. после получения доступа (пункт 'Предоставление доступа к существующему namespace'  на  Выделение namespace и предоставление к ним доступов)
+
+нажимаем кнопку винды и пишем Powershell и правой кнопкой и 'запуск от имени администратора'
+вставляем Set-ExecutionPolicy RemoteSigned
+выполянем по очереди команды:                                                                                                                                                                                                                                                                                                                                                                           
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install kubernetes-cli
+cd ~
+mkdir .kube
+cd .kube
+New-Item config -type file
+
+переходим по ссылке https://stage-k8s-gangway.k8s.orglot.office/commandline и копируем из нижнего окна всё и вставляем в файл в вашей домашней папке в подпапке .kube в файл config
+для проекта фискализация:     kubectl config set-context --current --namespace=tfi-fiscal
+
+
+Для установки на linux 64 bit
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/$(uname | awk '{print tolower($0)}')/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+Скачать config https://stage-k8s-gangway.k8s.orglot.office/commandline и перенести в linux систему
+Затем можно будет использовать команды к примеру: kubectl get pods --kubeconfig /home/kbessonov/kubeconf.txt -n tfi-fiscal (/home/kbessonov/kubeconf.txt - путь к скаченному файлу, tfi-fiscal - namespace который интересует)
