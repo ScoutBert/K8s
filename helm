@@ -1,0 +1,11 @@
+
+
+
+helm upgrade --install
+helm install --dry-run
+helm install --debug 
+helm template 
+
+helm install --dry-run dev-esb-import ./collation-esb-import/config/ -f env_values/DEV/dev_collation.conf
+name: "{{ .Values.fullname }}"
+helm install --dry-run dev-esb-import ./collation-esb-import/config/ -f env_values/DEV/dev_collation.conf --set fullname=bla-bla
