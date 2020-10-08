@@ -1,0 +1,56 @@
+########## get
+
+kubectl get pods
+kubectl get configmap
+kubectl get deployments
+kubectl get cronjobs
+kubectl get secrets
+kubectl get jobs
+
+########## kubectl
+
+kubectl config set-context --current --namespace=
+
+kubectl rollout restart deployment <имя деплоймента, под которого ты хочешь рестартануть>
+kubectl describe configmap - посмотреть конфиг конкретного модуля
+kubectl edit configmap  - изменение конфига (если в windows о откроется блокнот, если в linux то откроется vim)
+kubectl scale --replicas=0 deployment  - говорим что кол-во подов должно быть 0, за счет этого останавливаем работу данного модуля
+kubectl scale deploy -n <namespace> --replicas=0 –all  остановить
+
+########## logs 
+
+kubectl logs 
+kubectl get events
+kubectl describe pods
+
+########## debug
+
+command: ['/bin/sleep', '3600'] в deployments в секцию conteiners
+
+kubectl get deployment tifa-fcgi-ortax -o yaml  -n tifa-ortax  - Смотрим деплоймент если не запускается под
+
+########## secrets
+
+kubectl create secret docker-registry regcred --docker-server=registry.tccenter.ru --docker-username=service_oipo_users --docker-password=
+kubectl get secrets
+kubectl describe secret regcred
+
+########## resourcequotas
+
+kubectl describe resourcequotas dev-ortax-resource-quota -n dev-ortax
+kubectl describe resourcequotas dev-collation-resource-quota -n dev-collation
+
+########## FAQ
+
+kubectl.exe edit configmap + kubectl.exe rollout restart deployment  - edit/restart pods
+
+for i in `kubectl get pods | fgrep -v NAME | cut -f1 -d" " `; do kubectl describe pod  $i | fgrep Image: ; done
+
+
+kubectl get pods | Select-String atol - текущее состояние подов, но где Select-String аналог grep
+kubectl get pods --field-selector status.phase=Running - поды со статусом Running
+
+проверить открытый ли порт без телнета и нслукапа:
+bash -c '</dev/tcp/10.200.1.28/1522 &>/dev/null'
+если порт закрыт, ругнется : "command terminated with exit code 137"
+
